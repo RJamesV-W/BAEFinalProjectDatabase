@@ -1,5 +1,5 @@
 -- Create database
-DROP DATABASE IF EXISTS DataSet; -- This will drop the database if needed. Only use during production, don't use in deployment.
+-- DROP DATABASE IF EXISTS DataSet; -- This will drop the database if needed. Only use during production, don't use in deployment.
 CREATE DATABASE IF NOT EXISTS DataSet;
 USE DataSet;
 
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS BANK_CARDS (
     bankAccountId VARCHAR(255),
     accountNumber VARCHAR(255),
     bank VARCHAR(255),
-    PRIMARY KEY (bankcardId, cardNumber),
+    PRIMARY KEY (cardNumber),
     FOREIGN KEY (bankAccountId, accountNumber) REFERENCES BANK_ACCOUNT_HOLDERS(bankAccountId, accountNumber)
 );
 
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS EPOS_TRANSACTIONS (
     payeeAccount VARCHAR(255),
     amount DECIMAL(10, 2),
     PRIMARY KEY (eposId),
-    FOREIGN KEY (bankCardNumber) REFERENCES BANK_CARDS(bankcardId),
+    FOREIGN KEY (bankCardNumber) REFERENCES BANK_CARDS(cardNumber),
     FOREIGN KEY (payeeAccount) REFERENCES BANK_ACCOUNT_HOLDERS(bankAccountId),
     FOREIGN KEY (eposId) REFERENCES EPOS_TERMINALS(id)
 );
