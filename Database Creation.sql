@@ -1,5 +1,5 @@
 -- Create database
--- DROP DATABASE IF EXISTS DataSet; -- This will drop the database if needed. Only use during testing.
+DROP DATABASE IF EXISTS DataSet; -- This will drop the database if needed. Only use during testing.
 CREATE DATABASE IF NOT EXISTS DataSet;
 USE DataSet;
 
@@ -69,17 +69,17 @@ CREATE TABLE IF NOT EXISTS VEHICLE_REGISTRATIONS (
     address VARCHAR(255),
     dateOfBirth DATE,
     driverLicenseID VARCHAR(255),
-    PRIMARY KEY (registrationId),
-    FOREIGN KEY (forenames, surname, address, dateOfBirth) REFERENCES CITIZEN(forename, surname, homeAddress, dateOfBirth)
+    PRIMARY KEY (registrationId)
+--    FOREIGN KEY (forenames, surname, address, dateOfBirth) REFERENCES CITIZEN(forename, surname, homeAddress, dateOfBirth)
 );
 
 -- ANPR Observations
 CREATE TABLE IF NOT EXISTS ANPR_OBSERVATIONS (
     ANPRPointId VARCHAR(255) NOT NULL,
     event_time DATETIME(3) NOT NULL,
-    vehicleRegistrationNumber VARCHAR(255),
-    FOREIGN KEY (vehicleRegistrationNumber) REFERENCES VEHICLE_REGISTRATIONS(vehicleRegistrationNo),
-    FOREIGN KEY (ANPRPointId) REFERENCES ANPR_CAMERA(anprId)
+    vehicleRegistrationNumber VARCHAR(255)
+--    FOREIGN KEY (vehicleRegistrationNumber) REFERENCES VEHICLE_REGISTRATIONS(vehicleRegistrationNo)
+--    FOREIGN KEY (ANPRPointId) REFERENCES ANPR_CAMERA(anprId)
 );
 
 -- Tables for Mobile Call Records
@@ -91,8 +91,8 @@ CREATE TABLE IF NOT EXISTS SUBSCRIBER_RECORDS (
     address VARCHAR(255),
     phoneNumber VARCHAR(255),
     network VARCHAR(255),
-    PRIMARY KEY (phoneNumber),
-    FOREIGN KEY (forenames, surname, address, dateOfBirth) REFERENCES CITIZEN(forename, surname, homeAddress, dateOfBirth)
+    PRIMARY KEY (phoneNumber)
+--    FOREIGN KEY (forenames, surname, address, dateOfBirth) REFERENCES CITIZEN(forename, surname, homeAddress, dateOfBirth)
 );
 
 -- Mobile Calls Records
@@ -101,8 +101,8 @@ CREATE TABLE IF NOT EXISTS MOBILE_CALL_RECORDS (
     callerMSISDN VARCHAR(255),
     callCellTowerId VARCHAR(255),
     receiverMSISDN VARCHAR(255),
-    receiverTowerId VARCHAR(255),
-	FOREIGN KEY (callCellTowerId) REFERENCES SUBSCRIBER_RECORDS(phoneNumber)
+    receiverTowerId VARCHAR(255)
+--  FOREIGN KEY (callCellTowerId) REFERENCES SUBSCRIBER_RECORDS(phoneNumber)
 );
 
 -- Cell Towers
@@ -112,8 +112,8 @@ CREATE TABLE IF NOT EXISTS CELL_TOWERS (
     tower_type VARCHAR(255),
     latitude DECIMAL(16, 13),
     longitude DECIMAL(17, 13),
-    PRIMARY KEY (cellTowerId),
-    FOREIGN KEY (cellTowerId) REFERENCES MOBILE_CALL_RECORDS(callCellTowerId)
+    PRIMARY KEY (cellTowerId)
+--    FOREIGN KEY (cellTowerId) REFERENCES MOBILE_CALL_RECORDS(callCellTowerId)
 );
 
 -- Tables for Financial Transactions
@@ -126,8 +126,8 @@ CREATE TABLE IF NOT EXISTS BANK_ACCOUNT_HOLDERS (
     surname VARCHAR(255),
     dateOfBirth DATE,
     homeAddress VARCHAR(255),
-    PRIMARY KEY (bankAccountId),
-    FOREIGN KEY (fornames, surname, dateOfBirth, homeAddress) REFERENCES CITIZEN(forename, surname, dateOfBirth, homeAddress)
+    PRIMARY KEY (bankAccountId)
+--    FOREIGN KEY (fornames, surname, dateOfBirth, homeAddress) REFERENCES CITIZEN(forename, surname, dateOfBirth, homeAddress)
 );
 
 -- Bank Cards
@@ -138,8 +138,8 @@ CREATE TABLE IF NOT EXISTS BANK_CARDS (
     bankAccountId VARCHAR(255),
     accountNumber VARCHAR(255),
     bank VARCHAR(255),
-    PRIMARY KEY (bankcardId),
-    FOREIGN KEY (accountNumber) REFERENCES BANK_ACCOUNT_HOLDERS(accountNumber)
+    PRIMARY KEY (bankcardId)
+--    FOREIGN KEY (accountNumber) REFERENCES BANK_ACCOUNT_HOLDERS(accountNumber)
 );
 
 -- ATM Transactions
@@ -148,9 +148,9 @@ CREATE TABLE IF NOT EXISTS ATM_TRANSACTIONS (
     atmId VARCHAR(255),
     bankCardNumber VARCHAR(255),
     transaction_type VARCHAR(255),
-    amount DECIMAL(10, 2),
-    FOREIGN KEY (atmId) REFERENCES ATM_POINT(atmId)
-    FOREIGN KEY (bankCardNumber) REFERENCES BANK_CARDS(cardNumber)
+    amount DECIMAL(10, 2)
+--    FOREIGN KEY (atmId) REFERENCES ATM_POINT(atmId)
+--    FOREIGN KEY (bankCardNumber) REFERENCES BANK_CARDS(cardNumber)
 );
 
 -- EPOS Transactions
@@ -160,10 +160,10 @@ CREATE TABLE IF NOT EXISTS EPOS_TRANSACTIONS (
     bankCardNumber VARCHAR(255),
     payeeAccount VARCHAR(255),
     amount DECIMAL(10, 2),
-    PRIMARY KEY (eposId),
-    FOREIGN KEY (bankCardNumber) REFERENCES BANK_CARDS(bankcardId),
-    FOREIGN KEY (payeeAccount) REFERENCES BANK_ACCOUNT_HOLDERS(bankAccountId),
-    FOREIGN KEY (eposId) REFERENCES EPOS_TERMINALS(id)
+    PRIMARY KEY (eposId)
+--    FOREIGN KEY (bankCardNumber) REFERENCES BANK_CARDS(bankcardId),
+--    FOREIGN KEY (payeeAccount) REFERENCES BANK_ACCOUNT_HOLDERS(bankAccountId),
+--    FOREIGN KEY (eposId) REFERENCES EPOS_TERMINALS(id)
 );
 
 
