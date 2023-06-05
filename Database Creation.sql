@@ -7,12 +7,13 @@ USE DataSet;
 -- Citizen
 CREATE TABLE IF NOT EXISTS CITIZEN (
     citizenId VARCHAR(255) NOT NULL,
-    forename VARCHAR(255),
+    forenames VARCHAR(255),
     surname VARCHAR(255),
-    homeAddress VARCHAR(255),
+    address VARCHAR(255),
     dateOfBirth DATE,
     placeOfBirth VARCHAR(255),
-    PRIMARY KEY (citizenId)
+    sex VARCHAR(255),
+    PRIMARY KEY (forenames, surname, address, dateOfBirth)
 );
 
 -- Vehicles
@@ -69,17 +70,18 @@ CREATE TABLE IF NOT EXISTS VEHICLE_REGISTRATIONS (
     address VARCHAR(255),
     dateOfBirth DATE,
     driverLicenseID VARCHAR(255),
-    PRIMARY KEY (registrationId)
---    FOREIGN KEY (forenames, surname, address, dateOfBirth) REFERENCES CITIZEN(forename, surname, homeAddress, dateOfBirth)
+    PRIMARY KEY (registrationId),
+    FOREIGN KEY (forenames, surname, address, dateOfBirth) REFERENCES CITIZEN(forenames, surname, address, dateOfBirth),
+    FOREIGN KEY (vehicleRegistrationNo) REFERENCES VEHICLES(vehicleRegistrationNo)
 );
 
 -- ANPR Observations
 CREATE TABLE IF NOT EXISTS ANPR_OBSERVATIONS (
     ANPRPointId VARCHAR(255) NOT NULL,
     event_time DATETIME(3) NOT NULL,
-    vehicleRegistrationNumber VARCHAR(255)
---    FOREIGN KEY (vehicleRegistrationNumber) REFERENCES VEHICLE_REGISTRATIONS(vehicleRegistrationNo)
---    FOREIGN KEY (ANPRPointId) REFERENCES ANPR_CAMERA(anprId)
+    vehicleRegistrationNo VARCHAR(255),
+    FOREIGN KEY (vehicleRegistrationNo) REFERENCES VEHICLES(vehicleRegistrationNo),
+    FOREIGN KEY (ANPRPointId) REFERENCES ANPR_CAMERA(anprId)
 );
 
 -- Tables for Mobile Call Records
@@ -102,7 +104,7 @@ CREATE TABLE IF NOT EXISTS MOBILE_CALL_RECORDS (
     callCellTowerId VARCHAR(255),
     receiverMSISDN VARCHAR(255),
     receiverTowerId VARCHAR(255)
---  FOREIGN KEY (callCellTowerId) REFERENCES SUBSCRIBER_RECORDS(phoneNumber)
+--    FOREIGN KEY (callCellTowerId) REFERENCES SUBSCRIBER_RECORDS(phoneNumber)
 );
 
 -- Cell Towers
@@ -165,6 +167,5 @@ CREATE TABLE IF NOT EXISTS EPOS_TRANSACTIONS (
 --    FOREIGN KEY (payeeAccount) REFERENCES BANK_ACCOUNT_HOLDERS(bankAccountId),
 --    FOREIGN KEY (eposId) REFERENCES EPOS_TERMINALS(id)
 );
-
 
 
